@@ -2,36 +2,10 @@
 <html>
   <head>
     <title>OrderGroove</title>
-    <script type="application/javascript">
-
-      function getEtsyCatalog () {
-        var head = document.head;
-        var script = document.createElement('script');
-        var apiKey = 'p169gzr369njgueyv6e489a7';
-        var resultParser = 'displayResults';
-        var endpoint = 'https://openapi.etsy.com/v2/listings/active';
-        var url = endpoint + '.js?api_key=' + apiKey + '&callback=' + resultParser;
-
-        script.setAttribute('src', url);
-        script.setAttribute('type', 'application/javascript');
-        head.appendChild(script);
-        head.removeChild(script);
-      }
-
-      function displayResults (data) {
-        var resultContainer = document.getElementById('result-container');
-        resultContainer.innerHTML = '';
-        data.results.map(function(item) {
-          var listingElement = document.createElement('div');
-          listingElement.innerHTML = item.title;
-          resultContainer.appendChild(listingElement);
-        });
-      }
-
-    </script>
+    <script src="js/app.js" type="application/javascript"></script>
   </head>
   <body>
-    <button onclick="getEtsyCatalog()">See listings</button>
+    <button onclick="scope.makeJSONPRequest()">See listings</button>
     <div id="result-container"></div>
   </body>
 </html>
