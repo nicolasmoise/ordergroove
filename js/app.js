@@ -1,6 +1,7 @@
 var scope = (function () {
 
   var page = 1;
+  var limit = 25;
 
   function makeJSONPRequest () {
     var head = document.head,
@@ -21,26 +22,44 @@ var scope = (function () {
     return endpoint + '.js?api_key=' + apiKey + '&page=' + page + '&callback=' + resultParser;
   }
 
+  function getNextPage () {
+    page++;
+    makeJSONPRequest();
+  }
+
+  function getPreviousPage () {
+    page--;
+    makeJSONPRequest();
+  }
+
   function responseHandler (data) {
+    document.getElementById('result-container').style.display = '';
+    updatePagination(data);
     updateItemList(data);
   }
 
   function updateItemList (data) {
-    resultContainer().innerHTML = '';
+    document.getElementById('item-list').innerHTML = '';
     data.results.map(createItemElement);
   }
 
-  function createItemElement (item) {
-    var listingElement = document.createElement('div');
-    listingElement.innerHTML = item.title;
-    resultContainer().appendChild(listingElement);
+  function updatePagination (data) {
+    var MAX_PAGE = 2001; //Max of page according to Etsy API
+    var totalPages= Math.min(MAX_PAGE, data.count / limit);
+    document.getElementById('previous-page-btn').style.display = page === 1 ? 'none' : '';
+    document.getElementById('next-page-btn').style.display = page === MAX_PAGE? 'none': '';
+    document.getElementById('current-page').innerHTML = 'Page ' + page + ' of ' + totalPages;
   }
 
-  function resultContainer () {
-    return document.getElementById('result-container');
+  function createItemElement (item) {
+    var itemElement = document.createElement('div');
+    itemElement.innerHTML = item.title;
+    document.getElementById('item-list').appendChild(itemElement);
   }
 
   return {
+    getPreviousPage : getPreviousPage,
+    getNextPage: getNextPage,
     makeJSONPRequest: makeJSONPRequest,
     responseHandler: responseHandler
   };

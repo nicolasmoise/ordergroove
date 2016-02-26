@@ -5,7 +5,11 @@
     <script src="js/app.js" type="application/javascript"></script>
   </head>
   <body>
-    <button onclick="scope.makeJSONPRequest()">See listings</button>
-    <div id="result-container"></div>
+    <div id="result-container" style="display:none;">
+      <span id="current-page"></span>
+      <button onclick="scope.getPreviousPage()" id="previous-page-btn">Previous Page</button>
+      <button onclick="scope.getNextPage()" id="next-page-btn">Next Page</button>
+      <div id="item-list"></div>
+    <div>
   </body>
 </html>
