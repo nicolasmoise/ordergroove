@@ -1,13 +1,29 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>OrderGroove</title>
     <script type="application/javascript">
-      function parseResults(data) {
+
+      function getEtsyCatalog () {
+        var head = document.head;
+        var script = document.createElement('script');
+        var apiKey = 'p169gzr369njgueyv6e489a7';
+        var resultParser = 'parseResults';
+        var endpoint = 'https://openapi.etsy.com/v2/listings/active';
+        var url = endpoint + '.js?api_key=' + apiKey + '&callback=' + resultParser;
+        script.setAttribute('src', url);
+        script.setAttribute('type', 'application/javascript');
+        head.appendChild(script);
+        head.removeChild(script);
+      }
+
+      function parseResults (data) {
         console.log(data);
       }
+
     </script>
-    <script type="application/javascript" src="https://openapi.etsy.com/v2/listings/active.js?api_key=p169gzr369njgueyv6e489a7&callback=parseResults"></script>
   </head>
   <body>
+    <button onclick="getEtsyCatalog()">See listings</button>
   </body>
 </html>
