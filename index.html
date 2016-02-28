@@ -2,9 +2,16 @@
 <html>
   <head>
     <title>OrderGroove</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.5.1/lodash.js" type="application/javascript"></script>
     <script src="js/app.js" type="application/javascript"></script>
   </head>
   <body>
+
+    <form name="searchForm" onsubmit="return scope.search();">
+      <input type="text" name="keywords" id="keywords-input" />
+      <input type="submit" value="Search">
+    </form>
+
     <div id="result-container" style="display:none;">
       <span id="current-page"></span>
       <button onclick="scope.getPreviousPage()" id="previous-page-btn">Previous Page</button>
