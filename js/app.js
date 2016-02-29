@@ -11,6 +11,7 @@ var scope = (function () {
       url = generateRequestUrl();
 
     document.getElementById('result-container').style.display = 'none';
+    document.getElementById('loading-animation').style.display = '';
     script.setAttribute('src', url);
     script.setAttribute('type', 'application/javascript');
     head.appendChild(script);
@@ -64,6 +65,7 @@ var scope = (function () {
 
   function updateItemList (data) {
     document.getElementById('result-container').style.display = '';
+    document.getElementById('loading-animation').style.display = 'none';
 
     if(data.count === 0) {
       document.getElementById('item-list').innerHTML = 'No items match your search';
