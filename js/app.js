@@ -13,6 +13,7 @@ var scope = (function () {
     document.getElementById('result-container').style.display = 'none';
     document.getElementById('no-items-found').style.display = 'none';
     document.getElementById('loading-animation').style.display = '';
+
     script.setAttribute('src', url);
     script.setAttribute('type', 'application/javascript');
     head.appendChild(script);
@@ -25,7 +26,8 @@ var scope = (function () {
         api_key :'p169gzr369njgueyv6e489a7',
         page : page,
         callback : 'scope.responseHandler',
-        limit : limit
+        limit : limit,
+        includes : 'Images(url_75x75):1:0'
       };
 
       if (keywords){
@@ -68,7 +70,6 @@ var scope = (function () {
   function updateItemList (data) {
 
     document.getElementById('loading-animation').style.display = 'none';
-    document.getElementById('item-list').innerHTML = '';
 
     if(data.count === 0) {
       document.getElementById('no-items-found').style.display = '';
@@ -76,6 +77,8 @@ var scope = (function () {
     } else {
       document.getElementById('no-items-found').style.display = 'none';
       document.getElementById('result-container').style.display = '';
+      document.getElementById('item-list').innerHTML = '';
+
       data.results.map(createItemElement);
     }
   }
@@ -111,9 +114,21 @@ var scope = (function () {
 
   function createItemElement (item) {
     var itemRow = document.createElement('tr');
-    var itemData = document.createElement('td');
-    itemData.innerHTML = item.title;
-    itemRow.appendChild(itemData);
+
+    var itemImage = document.createElement('td');
+    if(item.Images.length > 0) {
+      itemImage.innerHTML = '<img src="' + item.Images[0].url_75x75 + '" />';
+    }
+
+    var itemTitle = document.createElement('td');
+    itemTitle.innerHTML = '<a href="' + item.url + '" target="_blank">' + item.title + '</a>';
+
+    var itemPrice = document.createElement('td');
+    itemPrice.innerHTML = item.price + ' ' + item.currency_code;
+
+    itemRow.appendChild(itemImage);
+    itemRow.appendChild(itemTitle);
+    itemRow.appendChild(itemPrice);
     document.getElementById('item-list').appendChild(itemRow);
   }
 

@@ -3,6 +3,11 @@ form[name=searchForm] {
   margin-bottom: 20px;
 }
 
+
+table td {
+  vertical-align: middle !important;
+}
+
 #loading-animation:after {
   overflow: hidden;
   display: inline-block;
