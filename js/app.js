@@ -1,7 +1,7 @@
 var scope = (function () {
 
   var page = 1,
-    limit = 25,
+    limit = 20,
     keywords = '',
     MAX_PAGE = 2001; //Max of page according to Etsy API
 
@@ -11,6 +11,7 @@ var scope = (function () {
       url = generateRequestUrl();
 
     document.getElementById('result-container').style.display = 'none';
+    document.getElementById('no-items-found').style.display = 'none';
     document.getElementById('loading-animation').style.display = '';
     script.setAttribute('src', url);
     script.setAttribute('type', 'application/javascript');
@@ -23,7 +24,8 @@ var scope = (function () {
       queryObj = {
         api_key :'p169gzr369njgueyv6e489a7',
         page : page,
-        callback : 'scope.responseHandler'
+        callback : 'scope.responseHandler',
+        limit : limit
       };
 
       if (keywords){
@@ -64,22 +66,42 @@ var scope = (function () {
   }
 
   function updateItemList (data) {
-    document.getElementById('result-container').style.display = '';
+
     document.getElementById('loading-animation').style.display = 'none';
+    document.getElementById('item-list').innerHTML = '';
 
     if(data.count === 0) {
-      document.getElementById('item-list').innerHTML = 'No items match your search';
+      document.getElementById('no-items-found').style.display = '';
+      document.getElementById('result-container').style.display = 'none';
     } else {
-      document.getElementById('item-list').innerHTML = '';
+      document.getElementById('no-items-found').style.display = 'none';
+      document.getElementById('result-container').style.display = '';
       data.results.map(createItemElement);
     }
   }
 
   function updatePagination (data) {
-    var lastPage = totalPages(data.count);
-    document.getElementById('previous-page-btn').style.display = page === 1 ? 'none' : '';
-    document.getElementById('next-page-btn').style.display = page ===  lastPage ? 'none': '';
-    document.getElementById('current-page').innerHTML = 'Page ' + page + ' of ' + lastPage;
+    var lastPage = totalPages(data.count),
+      previousPageBtn = document.getElementById('previous-page-btn'),
+      nextPageBtn = document.getElementById('next-page-btn'),
+      paginationCtn = document.getElementById('pagination-container');
+
+    if (totalPages === 0 || totalPages === 1){
+      paginationCtn.style.display = 'none';
+    } else {
+      paginationCtn.style.display = '';
+      disableElementOnCondition(previousPageBtn, page === 1);
+      disableElementOnCondition(nextPageBtn, page === lastPage);
+      document.getElementById('current-page').innerHTML = 'Page ' + page + ' of ' + lastPage;
+    }
+  }
+
+  function disableElementOnCondition (element, cond){
+    if(cond) {
+      element.setAttribute('disabled', 'true');
+    } else {
+      element.removeAttribute('disabled');
+    }
   }
 
   function totalPages (itemCount) {
@@ -88,9 +110,11 @@ var scope = (function () {
   }
 
   function createItemElement (item) {
-    var itemElement = document.createElement('div');
-    itemElement.innerHTML = item.title;
-    document.getElementById('item-list').appendChild(itemElement);
+    var itemRow = document.createElement('tr');
+    var itemData = document.createElement('td');
+    itemData.innerHTML = item.title;
+    itemRow.appendChild(itemData);
+    document.getElementById('item-list').appendChild(itemRow);
   }
 
   return {
