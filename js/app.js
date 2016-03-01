@@ -114,22 +114,30 @@ var scope = (function () {
 
   function createItemElement (item) {
     var itemRow = document.createElement('tr');
-
-    var itemImage = document.createElement('td');
-    if(item.Images && item.Images.length > 0) {
-      itemImage.innerHTML = '<img src="' + item.Images[0].url_75x75 + '" />';
-    }
-
-    var itemTitle = document.createElement('td');
-    itemTitle.innerHTML = '<a href="' + item.url + '" target="_blank">' + item.title + '</a>';
-
-    var itemPrice = document.createElement('td');
-    itemPrice.innerHTML = item.price + ' ' + item.currency_code;
-
-    itemRow.appendChild(itemImage);
-    itemRow.appendChild(itemTitle);
-    itemRow.appendChild(itemPrice);
+    itemRow.appendChild(imageCell(item));
+    itemRow.appendChild(titleCell(item));
+    itemRow.appendChild(priceCell(item));
     document.getElementById('item-list').appendChild(itemRow);
+  }
+
+  function priceCell (item) {
+    var priceCell = document.createElement('td');
+    priceCell.innerHTML = item.price + ' ' + item.currency_code;
+    return priceCell;
+  }
+
+  function titleCell (item) {
+    var titleCell = document.createElement('td');
+    titleCell.innerHTML = '<a href="' + item.url + '" target="_blank">' + item.title + '</a>';
+    return titleCell;
+  }
+
+  function imageCell (item) {
+    var imageCell = document.createElement('td');
+    if(item.Images && item.Images.length > 0) {
+      imageCell.innerHTML = '<img src="' + item.Images[0].url_75x75 + '" />';
+    }
+    return imageCell;
   }
 
   return {
