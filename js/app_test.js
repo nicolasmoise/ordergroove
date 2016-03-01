@@ -10,54 +10,61 @@ function expectToDisplayElement(elementId) {
 describe('response handler', function() {
 
 
-    it('should display the correct message if no items are returned', function() {
+    it('should display the correct message if no items are returned', function () {
       scope.responseHandler({ count: 0 });
       expectToDisplayElement('no-items-found');
     });
 
-    it('should not display the loading animation when items are returned', function() {
+    it('should not display the loading animation when items are returned', function () {
       scope.responseHandler({ count: 0 });
       expectToNotDisplayElement('loading-animation');
     });
 
-    it('should not display the item table when no items are returned', function() {
+    it('should not display the item table when no items are returned', function () {
       scope.responseHandler({ count: 0 });
       expectToNotDisplayElement('result-container');
     });
 
-    it('should display the item table when items are returned', function() {
+    it('should display the item table when items are returned', function () {
       scope.responseHandler({ count: 1, results: [] });
       expectToDisplayElement('result-container');
     });
 
-    it('should display the item table when items are returned', function() {
+    it('should display the item table when items are returned', function () {
       scope.responseHandler({ count: 1, results: [] });
       expectToDisplayElement('result-container');
     });
 
-    it('should not display the no items found message when items are returned', function() {
+    it('should not display the no items found message when items are returned', function () {
       scope.responseHandler({ count: 1, results: [] });
       expectToNotDisplayElement('no-items-found');
     });
 
-    it('should not display the pagination if there is only one page', function() {
+    it('should not display the pagination if there is only one page', function () {
       scope.responseHandler({ count: 1, results: [] });
       expectToNotDisplayElement('pagination-container');
     });
 
-    it('should display the pagination if there is more than one page', function() {
+    it('should display the pagination if there is more than one page', function () {
       scope.responseHandler({ count: 30, results: [] });
       expectToDisplayElement('pagination-container');
     });
 
-    it('should correctly populate the item table', function() {
+    it('should disable the previous page button if on the first page', function () {
+      scope.responseHandler({ count: 30, results: [] });
+      var previousPageBtn = document.getElementById('previous-page-btn');
+      var disabled = previousPageBtn.getAttribute('disabled');
+      expect(disabled).to.equal('true');
+    });
+
+    it('should correctly populate the item table', function () {
       var items = [{},{}],
         item_list = document.getElementById('item-list');
       scope.responseHandler({ count: 2, results: items });
       expect(item_list.children.length).to.equal(2);
     });
 
-    it('should correctly set the item title', function() {
+    it('should correctly set the item title', function () {
       var items = [{title: 'item title'}],
         item_list = document.getElementById('item-list');
 
@@ -68,7 +75,7 @@ describe('response handler', function() {
       expect(itemTitle).to.equal('item title');
     });
 
-    it('should correctly set the item url', function() {
+    it('should correctly set the item url', function () {
       var items = [{url: 'item url'}],
         item_list = document.getElementById('item-list');
 
@@ -79,7 +86,7 @@ describe('response handler', function() {
       expect(itemUrl).to.equal('item url');
     });
 
-    it('should correctly set the item price', function() {
+    it('should correctly set the item price', function () {
       var items = [{price: 123, currency_code: 'USD'}],
         item_list = document.getElementById('item-list');
 
