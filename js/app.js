@@ -89,7 +89,7 @@ var scope = (function () {
       nextPageBtn = document.getElementById('next-page-btn'),
       paginationCtn = document.getElementById('pagination-container');
 
-    if (totalPages === 0 || totalPages === 1){
+    if (lastPage === 0 || lastPage === 1){
       paginationCtn.style.display = 'none';
     } else {
       paginationCtn.style.display = '';
@@ -132,54 +132,12 @@ var scope = (function () {
     document.getElementById('item-list').appendChild(itemRow);
   }
 
-
-  function testModule () {
-
-    var element;
-
-    function assertEqual () {
-      if (arguments[0] !== arguments[1]) {
-        throw('Test ""' + arguments[2] + '"" Failed: ' + arguments[0] + ' is not equal to ' + arguments[1]);
-      } else {
-        var passedMessage = 'Test Passed: ' + arguments[2];
-        console.log(passedMessage);
-      }
-    }
-
-    assertEqual(totalPages(20), 1, 'totalPages() should properly set the right number of pages');
-    assertEqual(totalPages(33), 2, 'totalPages() should properly set the right number of pages');
-    assertEqual(totalPages(2005 * limit), MAX_PAGE, 'totalPages() should not go over the max pages allowed by the API');
-
-    page = 3;
-    getNextPage();
-    assertEqual(page, 4, 'getNextPage()');
-
-    page = 3;
-    getPreviousPage();
-    assertEqual(page, 2, 'getPreviousPage()');
-
-    element = document.createElement('input');
-    disableElementOnCondition(element, true);
-    assertEqual(element.getAttribute('disabled'), 'true', 'disableElementOnCondition() should add the disabled attribute');
-
-    element = document.createElement('input');
-    disableElementOnCondition(element, false);
-    assertEqual(element.getAttribute('disabled'), null, 'disableElementOnCondition() should remove the disabled attribute');
-
-    assertEqual(toQueryString({param1: 'value=', param2: 'value'}), 'param1=value%3D&param2=value', 'toQueryString() should convert an object to a query string');
-
-    return 'Tests pass';
-  }
-
   return {
     getNextPage: getNextPage,
     getPreviousPage : getPreviousPage,
     makeJSONPRequest: makeJSONPRequest,
     responseHandler: responseHandler,
-    search: search,
-    testModule: testModule
+    search: search
   };
 
 })();
-
-window.onload = scope.makeJSONPRequest;
